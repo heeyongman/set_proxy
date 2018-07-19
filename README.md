@@ -1,7 +1,6 @@
 # GetProxy
-<center>sdf</center>
 
-<p align="center">![icon](https://www.zybuluo.com/static/img/my_head.jpg)</p>
+![icon](https://github.com/heeyongman/set_proxy/blob/master/favicon-mac.ico)
 
 一个自动代理工具，提供翻墙功能
 

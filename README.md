@@ -1,6 +1,6 @@
 # GetProxy
 
-![icon](https://github.com/heeyongman/set_proxy/blob/master/favicon-mac.ico)
+![icon](https://github.com/heeyongman/-/blob/master/set_proxy_source/favicon-mac.ico)
 
 一个自动代理工具，提供翻墙功能
 
@@ -20,3 +20,5 @@
 访问时请使用谷歌、火狐等浏览器，IE以及Edge浏览器需要手动配置。
 
 请**尽量避免**使用国产杀毒软件。
+
+**图文教程请查看wiki：<a href="https://github.com/heeyongman/set_proxy/wiki/使用Chrome浏览器详细配置" target="_blank">https://github.com/heeyongman/set_proxy/wiki/使用Chrome浏览器详细配置</a>**

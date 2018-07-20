@@ -1,0 +1,1 @@
+D:\\soft\\agent\\set_proxy\\code\\default\\launcher\\brook_windows_386.exe client -l 127.0.0.1:1080 -i 127.0.0.1 -s nyc1.brookfree.pw:7000 -p DOUBIWTrvRL9Utn

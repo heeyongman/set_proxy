@@ -4,7 +4,7 @@ import sys
 import re
 import subprocess
 import requests
-from modify_hosts import execute
+# from modify_hosts import execute
 import logging
 import traceback
 from bubble import bubble
@@ -34,6 +34,10 @@ def get_page(url, charset):
         sys.exit(0)
 
 
+def modify_hosts():
+    os.system(curr_path+'\\modify_hosts.bat')
+
+
 def create_datafile():
     global carrier
     if not status:
@@ -51,7 +55,7 @@ def create_datafile():
                 data_file.write("0")
                 carrier = "0"
         # 修改hosts
-        execute()
+        modify_hosts()
     else:
         with open(data_file_path, mode='r') as read_file:
             carrier = read_file.read()

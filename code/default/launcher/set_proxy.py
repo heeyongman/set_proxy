@@ -4,6 +4,7 @@ import sys
 import re
 import subprocess
 import requests
+import ping
 # from modify_hosts import execute
 import logging
 import traceback
@@ -18,9 +19,10 @@ data_file_path = os.path.join(curr_path, os.pardir, os.pardir, os.pardir, 'data'
 log_path = os.path.abspath(os.path.join(curr_path, os.pardir, os.pardir, os.pardir))
 status = os.path.exists(data_file_path)
 sys.path.append(curr_path)
-carrier = "1"  # 0:unicom/mobile,1:telecom
+carrier = "0"  # min_delay_server
 
 LOG_FORMAT = "%(levelname)s - %(asctime)s - %(message)s"
+logging.FileHandler(filename=log_path+'\\get_proxy.log', encoding='utf-8')
 logging.basicConfig(filename=log_path + '\\get_proxy.log', level=logging.DEBUG, format=LOG_FORMAT)
 
 
@@ -38,22 +40,11 @@ def modify_hosts():
     os.system(curr_path+'\\modify_hosts.bat')
 
 
-def create_datafile():
+def modify_shortcut_hosts():
     global carrier
     if not status:
         # 创建快捷方式
         subprocess.call(["Wscript.exe", "//E:JScript", curr_path + "\\create_shortcut.js"], shell=False)
-        # 获取运营商
-        ip_url = "http://www.ip138.com/ips1388.asp"
-        ip_page = get_page(ip_url, 'gb2312')
-        #  encoding='utf-8'
-        with open(data_file_path, mode='w') as data_file:
-            if '电信' in ip_page:
-                data_file.write("1")
-                carrier = "1"
-            else:
-                data_file.write("0")
-                carrier = "0"
         # 修改hosts
         modify_hosts()
     else:
@@ -61,8 +52,31 @@ def create_datafile():
             carrier = read_file.read()
 
 
+def get_min_server(server):
+    # get min_delay_server
+    global status
+    delay = []
+    for s in server:
+        try:
+            d = ping.do_one(s, timeout=2, psize=64)
+            delay.append(2 if d is None else d)
+        except:
+            logging.error(traceback.format_exc())
+            bubble.startBubble('GetProxy', u'连接服务器异常，请保持网络畅通', 3)
+            sys.exit(0)
+
+    min_server = str(delay.index(min(delay)))
+    logging.info("min_server_num: %s" % min_server)
+    logging.info("min_server: %s" % server[int(min_server)])
+    #  encoding='utf-8'
+    with open(data_file_path, mode='w') as data_file:
+        data_file.write(min_server)
+        global carrier
+        carrier = min_server
+
+
 def set_proxy():
-    create_datafile()
+    modify_shortcut_hosts()
     bubble.startBubble("GetProxy", u"获取Server中...", 1)
     # notifier("GetProxy", "获取Server中...".decode('utf-8').encode(sys_type), 3)
     logging.info("获取Server中...")
@@ -76,8 +90,8 @@ def set_proxy():
     server = re.findall(server_re, page)
     logging.info(server)
 
-    if not server or len(server) < 2:
-        logging.error("获取Server信息失败！")
+    if not server:
+        logging.error(u"获取Server信息失败！")
         bubble.startBubble('GetProxy', u'获取Server失败，请保持网络畅通', 3)
         sys.exit(0)
 
@@ -85,6 +99,10 @@ def set_proxy():
     pwd = re.findall(pwd_re, page)
     # print("Server0(联通):%s\tServer1(电信):%s".decode('utf-8').encode(sys_type) % (server[0], server[1]))
     logging.info((server, pwd[0]))
+
+    # 获取最低延的server
+    new_server = [s[0:s.index(":")] for s in server]
+    get_min_server(new_server)
 
     # 执行文件的绝对路径
     start_file = curr_path + "\\start_brook.vbs"
@@ -107,7 +125,7 @@ def set_proxy():
     # end = raw_input("请按回车键继续...".decode('utf-8').encode(sys_type))
     bubble.startBubble('GetProxy', u'自动部署已完成，Enjoy! :)')
     # notifier('GetProxy', '自动部署已完成，Enjoy! :)'.decode('utf-8').encode(sys_type), 3)
-    logging.info("自动部署已完成")
+    logging.info(u"自动部署已完成")
 
 
 if __name__ == '__main__':

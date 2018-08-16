@@ -6,9 +6,9 @@ Function CurrentPath()
 End Function
 
 strCurrentPath = CurrentPath()
+quo = """"
 
-strArgs = strCurrentPath & "\code\default\python27\1.0\python.exe " & strCurrentPath & "\code\default\launcher\start.py"
-'WScript.Echo strArgs
+strArgs = quo & strCurrentPath & "\code\default\python27\1.0\python.exe" & quo & " " & quo & strCurrentPath & "\code\default\launcher\start.py" & quo
 
 Set oShell = CreateObject ("Wscript.Shell")
 oShell.Run strArgs, 0

@@ -21,6 +21,7 @@ REG_PATH = 'Software\Classes\ms-settings\shell\open\command'
 DELEGATE_EXEC_REG_KEY = 'DelegateExecute'
 
 LOG_FORMAT = "%(levelname)s - %(asctime)s - %(message)s"
+logging.FileHandler(filename=log_path+'\\get_proxy.log', encoding='utf-8')
 logging.basicConfig(filename=log_path + '\\get_proxy.log', level=logging.DEBUG, format=LOG_FORMAT)
 
 
@@ -70,8 +71,8 @@ def execute():
             os.system(FOD_HELPER)
             # sys.exit(0)
         except WindowsError:
-            logging.error("修改host失败")
-            print("修改host失败")
+            logging.error(u"修改host失败")
+            print(u"修改host失败")
             sys.exit(1)
     else:
         # 这里添加我们需要管理员权限的代码
@@ -80,7 +81,7 @@ def execute():
         new_line = "\n104.28.2.6 doub.io\n"
         with open(config_file, mode='a+') as f:
             f.write(new_line)
-        logging.info("host修改成功")
+        logging.info(u"host修改成功")
 
 
 if __name__ == '__main__':

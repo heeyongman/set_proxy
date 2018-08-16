@@ -16,6 +16,7 @@ noarch_lib = os.path.abspath(os.path.join(python_path, 'lib', 'noarch'))
 sys.path.append(noarch_lib)
 
 LOG_FORMAT = "%(levelname)s - %(asctime)s - %(message)s"
+logging.FileHandler(filename=log_path+'\\get_proxy.log', encoding='utf-8')
 logging.basicConfig(filename=log_path+'\\get_proxy.log', level=logging.DEBUG, format=LOG_FORMAT)
 
 has_desktop = True
@@ -25,17 +26,15 @@ sys.path.append(platform_lib)
 
 
 def main():
-
-    logging.info("-------------------------------------------------------------------")
-    logging.info("[step1]:start setting proxy...")
+    logging.info("-----------------------Begin---------------------------")
+    logging.info("\n\n[step1]:start setting proxy...")
     # subprocess.Popen('cmd/c start ' + cmd_line, shell=True)
     try:
         set_proxy()
-        logging.info("[step2]:start sys_tray...")
-        print("[step2]:start sys_tray...")
-        cmd_line = '%s\\python.exe %s\\win_tray.py' % (python_path, current_path)
-        os.system('cmd/c ' + cmd_line)
-        logging.info("started serve_forever")
+        logging.info("\n\n[step2]:start sys_tray...")
+        cmd_line = r'""%s\python.exe" "%s\win_tray.py""' % (python_path, current_path)
+        os.system(cmd_line)
+        logging.error("quit serve_forever")
 
     except Exception:
         logging.error(traceback.format_exc())

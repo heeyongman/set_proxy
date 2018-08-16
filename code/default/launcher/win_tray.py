@@ -36,6 +36,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 log_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
 
 LOG_FORMAT = "%(levelname)s - %(asctime)s - %(message)s"
+logging.FileHandler(filename=log_path+'\\get_proxy.log', encoding='utf-8')
 logging.basicConfig(filename=log_path + '\\get_proxy.log', level=logging.DEBUG, format=LOG_FORMAT)
 
 
@@ -168,7 +169,7 @@ class Win_tray:
         os._exit(0)
 
     def serve_forever(self):
-        logging.info("[step3]:enter win_tray...")
+        logging.info("\n\n[step3]:enter win_tray")
         self.systray._message_loop_func()
 
     def dialog_yes_no(self, msg="msg", title="Title", data=None, callback=None):

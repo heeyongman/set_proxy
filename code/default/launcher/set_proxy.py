@@ -37,7 +37,7 @@ def get_page(url, charset):
 
 
 def modify_hosts():
-    os.system(curr_path+'\\modify_hosts.bat')
+    os.system(r'"%s\modify_hosts.bat"' % curr_path)
 
 
 def modify_shortcut_hosts():
@@ -106,16 +106,16 @@ def set_proxy():
 
     # 执行文件的绝对路径
     start_file = curr_path + "\\start_brook.vbs"
-    config_file = curr_path + "\\start_brook.cmd"
+    server_file = curr_path + "\\server.dat"
 
     # with open(start_file, encoding='utf-8') as f:
     #     old_line = f.read()
     # 修改
-    new_line = "%s\\\\brook_windows_386.exe client -l 127.0.0.1:1080 -i 127.0.0.1 -s %s -p %s" \
-               % (curr_path.replace("\\", "\\\\"), server[int(carrier)], pwd[0])
+    new_line = r"%s\brook_windows_386.exe client -l 127.0.0.1:1080 -i 127.0.0.1 -s %s -p %s" \
+               % (curr_path, server[int(carrier)], pwd[0])
     # 写入文件
-    with open(config_file, mode='w') as config_file:  # , encoding='utf-8'
-        config_file.write(new_line)
+    with open(server_file, mode='w') as server_file:  # , py2中没有encoding='utf-8'
+        server_file.write(server[int(carrier)]+"\n"+pwd[0])
 
     # 执行脚本
     cmd = 'taskkill /F /IM brook_windows_386.exe'

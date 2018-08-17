@@ -34,7 +34,7 @@ def main():
         logging.info("\n\n[step2]:start sys_tray...")
         cmd_line = r'""%s\python.exe" "%s\win_tray.py""' % (python_path, current_path)
         os.system(cmd_line)
-        logging.error("quit serve_forever")
+        logging.error("quit server forever")
 
     except Exception:
         logging.error(traceback.format_exc())

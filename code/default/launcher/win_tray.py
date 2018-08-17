@@ -36,7 +36,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 log_path = os.path.abspath(os.path.join(current_path, os.pardir, os.pardir, os.pardir))
 
 LOG_FORMAT = "%(levelname)s - %(asctime)s - %(message)s"
-logging.FileHandler(filename=log_path+'\\get_proxy.log', encoding='utf-8')
+logging.FileHandler(filename=log_path + '\\get_proxy.log', encoding='utf-8')
 logging.basicConfig(filename=log_path + '\\get_proxy.log', level=logging.DEBUG, format=LOG_FORMAT)
 
 
@@ -131,8 +131,11 @@ class Win_tray:
     def on_enable_pac(self, widget=None, data=None):
         curr_path = os.path.dirname(os.path.abspath(__file__))
         try:
-            cmd = curr_path + r"\\brook_windows_386.exe systemproxy -u https://www.txthinking.com/pac/white.pac"
+            cmd = r'""%s\brook_windows_386.exe" systemproxy -u https://www.txthinking.com/pac/white.pac"' % curr_path
             os.system(cmd)
+            proxy_stat = self.get_proxy_state()
+            if proxy_stat != "pac":
+                logging.error("failed to enable pac!")
         except Exception:
             logging.error('on_enable_pac:%s' % traceback.format_exc())
         # win32_proxy_manager.set_proxy("https://www.txthinking.com/pac/white.pac")
@@ -142,8 +145,11 @@ class Win_tray:
     def on_disable_proxy(self, widget=None, data=None):
         curr_path = os.path.dirname(os.path.abspath(__file__))
         try:
-            cmd = curr_path + r"\\brook_windows_386.exe systemproxy -r"
+            cmd = r'""%s\brook_windows_386.exe" systemproxy -r"' % curr_path
             os.system(cmd)
+            proxy_stat = self.get_proxy_state()
+            if proxy_stat != "disable":
+                logging.error("failed to disable pac!")
         except Exception:
             logging.error("on_disable_proxy:%s" % traceback.format_exc())
         # win32_proxy_manager.set_proxy("")
